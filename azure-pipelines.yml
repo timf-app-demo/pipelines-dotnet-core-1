@@ -1,0 +1,41 @@
+trigger:
+- release*
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- script: |
+    curl -LJO https://unified-agent.s3.amazonaws.com/wss-unified-agent.jar
+    echo Unified Agent downloaded successfully
+    java -jar wss-unified-agent.jar -appPath "/dotnetcore-sample/bin/Debug/netcoreapp2.0/dotnetcore-sample.dll" -d "/dotnetcore-sample" -viaDebug true
+  env:
+    WS_APIKEY: $(APIKEY)
+    WS_PRODUCTNAME: $(System.TeamProject)_Prioritize
+    WS_PROJECTNAME: $(Build.Repository.Name)_$(Build.SourceBranchName)
+    WS_ENABLEIMPACTANALYSIS: true
+    WS_REQUIREKNOWNSHA1: false
+    WS_RESOLVEALLDEPENDENCIES: false
+    WS_NUGET_RESOLVEDEPENDENCIES: true
+    WS_NUGET_RESTOREDEPENDENCIES: true
+    WS_FILESYSTEMSCAN: false
+    WS_EXCLUDES: '**/build/** **/tests/**'
+  displayName: 'Unified Agent Prioritize Scan'
