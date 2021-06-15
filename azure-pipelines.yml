@@ -26,7 +26,7 @@ steps:
 - script: |
     curl -LJO https://unified-agent.s3.amazonaws.com/wss-unified-agent.jar
     echo Unified Agent downloaded successfully
-    java -jar wss-unified-agent.jar -appPath "./dotnetcore-sample/bin/Release/netcoreapp2.0/dotnetcore-sample.dll" -d "./dotnetcore-sample" -viaDebug true
+    java -jar wss-unified-agent.jar -appPath "./dotnetcore-sample/bin/$(buildConfiguration)/netcoreapp2.0/dotnetcore-sample.dll" -d "./dotnetcore-sample"
   env:
     WS_APIKEY: $(APIKEY)
     WS_PRODUCTNAME: $(System.TeamProject)_Prioritize
