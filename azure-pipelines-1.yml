@@ -1,4 +1,8 @@
 trigger:
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    publishLocation: 'pipeline'
 - release*
 
 pool:
