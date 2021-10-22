@@ -33,8 +33,8 @@ steps:
     WS_PRODUCTNAME: $(System.TeamProject)
     WS_PROJECTNAME: $(Build.Repository.Name)_$(Build.SourceBranchName)
     WS_FILESYSTEMSCAN: false
-    WS_CHECKPOLICIES: true
-    WS_FORCECHECKALLDEPENDENCIES: true
+    WS_CHECKPOLICIES: false
+    WS_FORCECHECKALLDEPENDENCIES: false
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
    
