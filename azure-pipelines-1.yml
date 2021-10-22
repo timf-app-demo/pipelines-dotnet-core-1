@@ -42,11 +42,11 @@ steps:
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)/whitesource'
     contents: 'checkPolicies-json.txt'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
    
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
+    targetPath: '$(Build.ArtifactStagingDirectory)/whitesource'
     artifact: 'WitheSource'
     publishLocation: 'pipeline'
     
