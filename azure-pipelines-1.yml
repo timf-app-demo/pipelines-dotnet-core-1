@@ -41,9 +41,3 @@ steps:
     WS_FORCECHECKALLDEPENDENCIES: true
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'WitheSource'
-    publishLocation: 'pipeline'
