@@ -38,9 +38,21 @@ steps:
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
  
-- publish: '$(Build.SourcesDirectory)/whitesource'
-  artifact: WitheSource
-  condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(Build.SourcesDirectory)/whitesource'
+    contents: 'index.html'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
+  condition: succeededOrFailed()
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/whitesource'
+    artifact: 'WitheSource'
+    publishLocation: 'pipeline'
+  condition: succeededOrFailed()
+
+
 
 
 
