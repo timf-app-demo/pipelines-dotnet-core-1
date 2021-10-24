@@ -39,12 +39,13 @@ steps:
   displayName: 'Unified Agent Scan'
  
 - task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/whitesource'
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)/whitesource'
     contents: |
-      'index.html'
-      'checkPolicies-json.txt'
-      'policyRejectionSummary.json'
+      index.html
+      checkPolicies-json.txt
+      policyRejectionSummary.json
     targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
   condition: succeededOrFailed()
 
