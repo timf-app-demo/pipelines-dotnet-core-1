@@ -41,7 +41,10 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)/whitesource'
-    contents: 'index.html'
+    contents: |
+      'index.html'
+      'checkPolicies-json.txt'
+      'policyRejectionSummary.json'
     targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
   condition: succeededOrFailed()
 
