@@ -26,8 +26,7 @@ steps:
 - script: |
     curl -LJO https://unified-agent.s3.amazonaws.com/wss-unified-agent.jar
     echo Unified Agent downloaded successfully
-    exitcode=java -jar wss-unified-agent.jar -d "./dotnetcore-sample"
-    echo $exitcode
+    java -jar wss-unified-agent.jar -d "./dotnetcore-sample"
   env:
     WS_APIKEY: $(APIKEY)
     WS_USERKEY: $(USERKEY)
@@ -38,17 +37,10 @@ steps:
     WS_FORCECHECKALLDEPENDENCIES: true
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
+ 
+- publish: '$(Build.SourcesDirectory)/whitesource'
+  artifact: WitheSource
+  condition: succeededOrFailed() #publish even if tests failed - it is useful for debugging
 
 
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)/whitesource'
-    contents: 'checkPolicies-json.txt'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
-   
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/whitesource'
-    artifact: 'WitheSource'
-    publishLocation: 'pipeline'
 
