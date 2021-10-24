@@ -54,7 +54,7 @@ steps:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/whitesource'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: 'whitesource.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/whitesource/whitesource.zip'
     replaceExistingArchive: true
   condition: succeededOrFailed()
 
