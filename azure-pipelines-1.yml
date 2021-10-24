@@ -39,7 +39,6 @@ steps:
   displayName: 'Unified Agent Scan'
  
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)/whitesource'
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)/whitesource'
     contents: |
@@ -55,7 +54,6 @@ steps:
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/whitesource.zip'
-    replaceExistingArchive: true
   condition: succeededOrFailed()
 
 - task: PublishPipelineArtifact@1
@@ -63,6 +61,4 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)/whitesource.zip'
     artifact: 'WitheSource'
   condition: succeededOrFailed()
-
-
 
