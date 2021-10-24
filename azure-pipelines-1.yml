@@ -49,14 +49,19 @@ steps:
     targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
   condition: succeededOrFailed()
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/whitesource'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_whitesource.zip'
+    replaceExistingArchive: true
+
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/whitesource'
+    targetPath: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)_whitesource.zip'
     artifact: 'WitheSource'
-    publishLocation: 'pipeline'
   condition: succeededOrFailed()
-
-
 
 
 
