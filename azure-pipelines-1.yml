@@ -54,13 +54,13 @@ steps:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/whitesource'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/whitesource/whitesource.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/whitesource.zip'
     replaceExistingArchive: true
   condition: succeededOrFailed()
 
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/whitesource'
+    targetPath: '$(Build.ArtifactStagingDirectory)/whitesource.zip'
     artifact: 'WitheSource'
   condition: succeededOrFailed()
 
