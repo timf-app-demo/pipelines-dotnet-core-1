@@ -40,7 +40,7 @@ steps:
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
 
-- pwsh: |
+- powershell: |
     $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     $projectToken = $ProjDetailsObj.projects.projectToken
     echo projectToken = $projectToken
