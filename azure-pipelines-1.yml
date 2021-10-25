@@ -41,21 +41,15 @@ steps:
   displayName: 'Unified Agent Scan'
 
 - pwsh: |
-    $outputsObject = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
-    echo outputsObject = $outputsObject
-    echo outputsObject.projectToken = $outputsObject.projects.projectToken
+    $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
+    echo outputsObject = $ProjDetailsObj
+    echo outputsObject.projectToken = $ProjDetailsObj.projects.projectToken
   displayName: 'Parse ARM deploymentOutputs | pwsh'
   condition: succeededOrFailed()
   env:
     ARM_OUTPUTS: $(armOutputs)
-- script: echo someResourceUriPwsh=$(someResourceUriPwsh)
-  displayName: 'Log someResourceUriPwsh'
-  condition: succeededOrFailed()
-
-- script: |
-    set WS_PROJECTTOKEN=$(jq -r '.projects | .[] | .projectToken' ./whitesource/scanProjectDetails.json)
-    echo Unified $WS_PROJECTTOKEN
-  displayName: 'Project token' 
+- script: echo Project token = $ProjDetailsObj.projects.projectToken
+  displayName: 'Log outputsObject.projectToken'
   condition: succeededOrFailed()
 
 - script: |
