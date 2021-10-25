@@ -43,13 +43,14 @@ steps:
 - pwsh: |
     $outputsObject = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     echo outputsObject = $outputsObject
-    echo "##vso[task.setvariable variable=someResourceUriPwsh]$($outputsObject.projectToken.value)"
+    echo outputsObject.projectToken.value = $outputsObject.projectToken.value
     Write-Host "##vso[task.setvariable variable=someResourceUriPwsh]$($outputsObject.projectToken.value)"
+    echo someResourceUriPwsh=$(someResourceUriPwsh)
   displayName: 'Parse ARM deploymentOutputs | pwsh'
   condition: succeededOrFailed()
   env:
     ARM_OUTPUTS: $(armOutputs)
-- script: echo $(someResourceUriPwsh)
+- script: echo someResourceUriPwsh=$(someResourceUriPwsh)
   displayName: 'Log someResourceUriPwsh'
   condition: succeededOrFailed()
 
