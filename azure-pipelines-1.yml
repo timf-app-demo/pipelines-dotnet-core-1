@@ -40,15 +40,10 @@ steps:
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
 
-- bash: |
-    echo projectToken= $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | jq -r '.projectToken.value'
-  displayName: 'Parse ARM deploymentOutputs | bash'
-  condition: succeededOrFailed()
-
 - pwsh: |
     $outputsObject = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     echo outputsObject = $outputsObject
-    echo outputsObject.projectToken.value = $outputsObject.projectToken.value
+    echo outputsObject.projectToken.value = $outputsObject.projects.projectToken.value
   displayName: 'Parse ARM deploymentOutputs | pwsh'
   condition: succeededOrFailed()
   env:
