@@ -40,12 +40,14 @@ steps:
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
 
+- bash: |
+    echo "##vso[task.setvariable variable=someResourceUriBash]$(echo $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | jq -r '.projectToken.value')"
+  displayName: 'Parse ARM deploymentOutputs | bash'
+
 - pwsh: |
     $outputsObject = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     echo outputsObject = $outputsObject
     echo outputsObject.projectToken.value = $outputsObject.projectToken.value
-    Write-Host "##vso[task.setvariable variable=someResourceUriPwsh]$($outputsObject.projectToken.value)"
-    echo someResourceUriPwsh=$(someResourceUriPwsh)
   displayName: 'Parse ARM deploymentOutputs | pwsh'
   condition: succeededOrFailed()
   env:
