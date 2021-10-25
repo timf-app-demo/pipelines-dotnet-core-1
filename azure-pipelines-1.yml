@@ -34,12 +34,22 @@ steps:
     WS_FILESYSTEMSCAN: false
     WS_CHECKPOLICIES: true
     WS_FORCECHECKALLDEPENDENCIES: true
+    WS_FORCEUPDATE: true
+    WS_FORCEUPDATE_FAILBUILDONPOLICYVIOLATION: true
     WS_GENERATEPROJECTDETAILSJSON: true
     WS_EXCLUDES: '**/build/** **/tests/**'
   displayName: 'Unified Agent Scan'
 
-
-
+- pwsh: |
+    $outputsObject = Get-Content ./whitesource/scanProjectDetails.json | ConvertFrom-Json
+    Write-Host "##vso[task.setvariable variable=someResourceUriPwsh]$($outputsObject.projectToken.value)"
+  displayName: 'Parse ARM deploymentOutputs | pwsh'
+  condition: succeededOrFailed()
+  env:
+    ARM_OUTPUTS: $(armOutputs)
+- script: echo $(someResourceUriPwsh)
+  displayName: 'Log someResourceUriPwsh'
+  condition: succeededOrFailed()
 
 - script: |
     set WS_PROJECTTOKEN=$(jq -r '.projects | .[] | .projectToken' ./whitesource/scanProjectDetails.json)
