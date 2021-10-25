@@ -8,6 +8,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  projectToken2: ''
 
 steps:
 - task: NuGetToolInstaller@1
@@ -46,9 +47,15 @@ steps:
     echo outputsObject.projectToken = $ProjDetailsObj.projects.projectToken
     Write-Host "##vso[task.setvariable variable=projectToken]$ProjDetailsObj.projects.projectToken"
     echo Project token = $projectToken
-  displayName: 'Parse projectToken'
+    $projectToken2 = $ProjDetailsObj.projects.projectToken
+    echo Project token 2 = $projectToken2
+  displayName: 'Get project token'
   condition: succeededOrFailed()
-- script: echo Project token = $projectToken
+  name: GetProjToken
+
+- script: |
+    echo Project token = $GetProjToken.projectToken
+    echo Project token 2 = $projectToken2
   displayName: 'Log projectToken'
   condition: succeededOrFailed()
 
