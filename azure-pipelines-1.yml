@@ -41,31 +41,13 @@ steps:
   displayName: 'Unified Agent Scan'
 
 - pwsh: |
+    $apiURL = 'https://saas.whitesourcesoftware.com/api/v1.3'
     $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
-    echo outputsObject = $ProjDetailsObj
-    echo outputsObject.projectToken = $ProjDetailsObj.projects.projectToken
-    Write-Host "##vso[task.setvariable variable=projectToken]$ProjDetailsObj.projects.projectToken"
-    echo Project token = $(projectToken)
-    echo env project Token = $env:projectToken
-  displayName: 'Get project token'
-  condition: succeededOrFailed()
-  name: GetProjToken
-
-- script: |
-    echo Project token = $GetProjToken.projectToken
-    echo (Project token) = $(projectToken)
-    echo env project Token = $env:projectToken
-  displayName: 'Log projectToken'
-  condition: succeededOrFailed()
-
-- script: |
-    echo API_URL=$API_URL
-    curl --output ./whitesource/VulnerabilityReport.xlsx --request POST $API_URL --header "Content-Type: application/json" -d "{"requestType":"getProjectVulnerabilityReport", "userKey":$(USERKEY), "projectToken":"1ba878c5e5744f5381bdbcff5423e4a90ca1f2a22d82442fa39569e4489dc661"}"
-    curl --output ./whitesource/RiskReport.pdf --request POST $API_URL --header "Content-Type: application/json" -d "{"requestType":"getProjectRiskReport", "userKey":$(USERKEY), "projectToken":"1ba878c5e5744f5381bdbcff5423e4a90ca1f2a22d82442fa39569e4489dc661"}"
-    curl --output ./whitesource/DueDiligenceReport.xlsx --request POST $API_URL --header "Content-Type: application/json" -d "{"requestType":"getProjectDueDiligenceReport", "userKey":$(USERKEY), "projectToken":"1ba878c5e5744f5381bdbcff5423e4a90ca1f2a22d82442fa39569e4489dc661"}"
-  env:
-    API_URL: 'https://saas.whitesourcesoftware.com/api/v1.3'
-  displayName: 'Pipeline Reports' 
+    echo projectToken = $ProjDetailsObj.projects.projectToken
+    Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectVulnerabilityReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectRiskReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectDueDiligenceReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$ProjDetailsObj.projects.projectToken}"
+  displayName: 'Pipeline Reports'
   condition: succeededOrFailed()
   
 - task: CopyFiles@2
@@ -78,7 +60,6 @@ steps:
       VulnerabilityReport.xlsx
       RiskReport.pdf
       DueDiligenceReport.xlsx
-      scanProjectDetails.json
     targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
   condition: succeededOrFailed()
 
