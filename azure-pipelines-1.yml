@@ -44,7 +44,7 @@ steps:
     $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     $projectToken = $ProjDetailsObj.projects.projectToken
     echo projectToken = $projectToken
-    $userKey = ConvertTo-SecureString "$(USERKEY)" -AsPlainText -Force
+    $userKey = ConvertTo-SecureString -String "$(USERKEY)" -AsPlainText -Force
     echo userKey = $userKey
     Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
