@@ -48,14 +48,12 @@ steps:
     echo USER_KEY = $(USERKEY)
     $userKey = "$(USERKEY)"
     echo userKey = $userKey
-    echo userKey substring = $userKey.substring(0, $userKey.length)
     echo WebRequests
     Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
-    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$userKey, 'projectToken':$projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
   env:
     API_URL: 'https://saas.whitesourcesoftware.com/api/v1.3'
-    USER_KEY: $(USERKEY)
   displayName: 'Pipeline Reports'
   condition: succeededOrFailed()
   
