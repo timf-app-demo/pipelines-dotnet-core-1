@@ -46,9 +46,8 @@ steps:
     echo outputsObject = $ProjDetailsObj
     echo outputsObject.projectToken = $ProjDetailsObj.projects.projectToken
     Write-Host "##vso[task.setvariable variable=projectToken]$ProjDetailsObj.projects.projectToken"
-    echo Project token = $projectToken
-    $projectToken2 = $ProjDetailsObj.projects.projectToken
-    echo Project token 2 = $projectToken2
+    echo Project token = $(projectToken)
+    echo env project Token = $env:projectToken
   displayName: 'Get project token'
   condition: succeededOrFailed()
   name: GetProjToken
@@ -56,7 +55,7 @@ steps:
 - script: |
     echo Project token = $GetProjToken.projectToken
     echo (Project token) = $(projectToken)
-    echo Project token 2 = $projectToken2
+    echo env project Token = $env:projectToken
   displayName: 'Log projectToken'
   condition: succeededOrFailed()
 
