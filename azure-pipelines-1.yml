@@ -30,7 +30,9 @@ steps:
     WS_APIKEY: $(APIKEY)
     WS_USERKEY: $(USERKEY)
     WS_PRODUCTNAME: $(System.TeamProject)
+    WS_PRODUCTVERSION: '1.0'
     WS_PROJECTNAME: $(Build.Repository.Name)_$(Build.SourceBranchName)
+    WS_PROJECTVERSION: '0.1'
     WS_FILESYSTEMSCAN: false
     WS_CHECKPOLICIES: true
     WS_FORCECHECKALLDEPENDENCIES: true
@@ -44,7 +46,6 @@ steps:
     $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     $projectToken = $ProjDetailsObj.projects.projectToken
     echo projectToken = $projectToken
-    echo env:USER_KEY = $env:USER_KEY
     Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
