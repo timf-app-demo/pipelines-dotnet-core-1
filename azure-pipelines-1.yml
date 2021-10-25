@@ -43,7 +43,7 @@ steps:
 - pwsh: |
     $outputsObject = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     echo outputsObject = $outputsObject
-    echo outputsObject.projectToken.value = $outputsObject.projects.projectToken.value
+    echo outputsObject.projectToken = $outputsObject.projects.projectToken
   displayName: 'Parse ARM deploymentOutputs | pwsh'
   condition: succeededOrFailed()
   env:
