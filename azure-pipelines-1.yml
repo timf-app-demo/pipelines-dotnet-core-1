@@ -41,7 +41,7 @@ steps:
   displayName: 'Unified Agent Scan'
 
 - bash: |
-    echo "##vso[task.setvariable variable=someResourceUriBash]$(echo $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | jq -r '.projectToken.value')"
+    echo projectToken= $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | jq -r '.projectToken.value'
   displayName: 'Parse ARM deploymentOutputs | bash'
   condition: succeededOrFailed()
 
