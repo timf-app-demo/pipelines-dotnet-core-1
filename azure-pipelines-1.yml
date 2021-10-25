@@ -8,7 +8,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  projectToken2: ''
 
 steps:
 - task: NuGetToolInstaller@1
