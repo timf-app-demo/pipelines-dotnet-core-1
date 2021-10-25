@@ -47,20 +47,12 @@ steps:
       $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
       $projectToken = $ProjDetailsObj.projects.projectToken
       echo projectToken = $projectToken
-      echo env:API_URL = $env:API_URL
-      echo env USER_KEY = $env:USER_KEY
-      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}" -f $env:USER_KEY)))
-      echo base64AuthInfo = $base64AuthInfo
-      echo ("Basic {0}" -f $base64AuthInfo)
-      $userKey2 = ("Basic {0}" -f $base64AuthInfo)
-      echo token = $userKey2
-      echo WebRequests
-      Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
-      Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
-      Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':$userKey2, 'projectToken':$projectToken}"
+      Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
+      Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
+      Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
   env:
     API_URL: 'https://saas.whitesourcesoftware.com/api/v1.3'
-    USER_KEY: $(USERKEY)
+    USER_KEY: '017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e'
   displayName: 'Pipeline Reports'
   condition: succeededOrFailed()
   
