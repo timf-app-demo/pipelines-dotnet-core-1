@@ -46,9 +46,15 @@ steps:
     echo projectToken = $projectToken
     $userKey = ConvertTo-SecureString -String "$(USERKEY)" -AsPlainText -Force
     echo userKey = $userKey
+    $body = @{ 
+      "requestType" = "getProjectDueDiligenceReport" 
+      "userKey" = $userKey
+      "projectToken" = $projectToken
+    }
+
     Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
-    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':$userKey, 'projectToken':$projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body $body
   env:
     API_URL: 'https://saas.whitesourcesoftware.com/api/v1.3'
     USER_KEY: '017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e'
