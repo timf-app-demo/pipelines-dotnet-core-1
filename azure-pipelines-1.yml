@@ -44,7 +44,7 @@ steps:
     $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     echo outputsObject = $ProjDetailsObj
     echo outputsObject.projectToken = $ProjDetailsObj.projects.projectToken
-    Write-Host "##vso[task.setvariable variable=projectToken]$ProjDetailsObj.projects.projectToken)"
+    Write-Host "##vso[task.setvariable variable=projectToken]$ProjDetailsObj.projects.projectToken"
     echo Project token = $projectToken
   displayName: 'Parse projectToken'
   condition: succeededOrFailed()
