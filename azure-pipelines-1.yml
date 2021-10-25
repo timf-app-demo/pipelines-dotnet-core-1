@@ -46,9 +46,9 @@ steps:
     echo projectToken = $ProjDetailsObj.projects.projectToken
     echo userKey = $(USERKEY)
     echo apiURL = $apiURL
-    Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing $apiURL -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectVulnerabilityReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
-    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing $apiURL" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectRiskReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
-    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -UseBasicParsing $apiURL -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectDueDiligenceReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing $apiURL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing $apiURL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -UseBasicParsing $apiURL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
   displayName: 'Pipeline Reports'
   condition: succeededOrFailed()
   
