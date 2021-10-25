@@ -41,7 +41,8 @@ steps:
   displayName: 'Unified Agent Scan'
 
 - pwsh: |
-    $outputsObject = ./whitesource/scanProjectDetails.json | ConvertFrom-Json
+    $outputsObject = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
+    echo outputsObject = $outputsObject
     echo "##vso[task.setvariable variable=someResourceUriPwsh]$($outputsObject.projectToken.value)"
     Write-Host "##vso[task.setvariable variable=someResourceUriPwsh]$($outputsObject.projectToken.value)"
   displayName: 'Parse ARM deploymentOutputs | pwsh'
