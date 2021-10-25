@@ -44,9 +44,10 @@ steps:
     $apiURL = 'https://saas.whitesourcesoftware.com/api/v1.3'
     $ProjDetailsObj = Get-Content $(Build.SourcesDirectory)/whitesource/scanProjectDetails.json | ConvertFrom-Json
     echo projectToken = $ProjDetailsObj.projects.projectToken
-    Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectVulnerabilityReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$ProjDetailsObj.projects.projectToken}"
-    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectRiskReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$ProjDetailsObj.projects.projectToken}"
-    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectDueDiligenceReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    echo userKey = $(USERKEY)
+    Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectVulnerabilityReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectRiskReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
+    Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -UseBasicParsing "https://saas.whitesourcesoftware.com/api/v1.3" -ContentType "application/json" -Method POST -Body "{ 'requestType':'getProjectDueDiligenceReport', 'userKey':$(USERKEY), 'projectToken':$ProjDetailsObj.projects.projectToken}"
   displayName: 'Pipeline Reports'
   condition: succeededOrFailed()
   
