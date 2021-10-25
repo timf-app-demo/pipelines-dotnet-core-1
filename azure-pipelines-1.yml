@@ -48,6 +48,10 @@ steps:
     echo env USER_KEY = $env:USER_KEY
     $userKey = "$(USERKEY)"
     echo userKey = $userKey
+    $securePassword = ConvertTo-SecureString "${env:USER_KEY}" -AsPlainText -Force
+    echo securePassword = $securePassword
+    $vmcred = New-Object System.Management.Automation.PSCredential (${env:USER_KEY}, $securePassword)
+    echo vmcred = $vmcred
     echo WebRequests
     Invoke-WebRequest -OutFile "./whitesource/VulnerabilityReport.xlsx" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectVulnerabilityReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -UseBasicParsing $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':'017cdac353d6408585730f387f272505c560c6dcd8a64865b2fc879d1866a80e', 'projectToken':$projectToken}"
