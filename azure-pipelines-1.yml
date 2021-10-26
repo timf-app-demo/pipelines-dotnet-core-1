@@ -29,7 +29,7 @@ steps:
   env:
     WS_APIKEY: $(APIKEY)
     WS_USERKEY: $(USERKEY)
-    WS_WSS_URL: https://app.whitesourcesoftware.com/agent
+    WS_WSS_URL: https://saas.whitesourcesoftware.com/agent
     WS_PRODUCTNAME: $(System.TeamProject)
     WS_PRODUCTVERSION: '1.0'
     WS_PROJECTNAME: $(Build.Repository.Name)_$(Build.SourceBranchName)
@@ -51,7 +51,7 @@ steps:
     Invoke-WebRequest -OutFile "./whitesource/RiskReport.pdf" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectRiskReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
     Invoke-WebRequest -OutFile "./whitesource/DueDiligenceReport.xlsx" -Uri $env:API_URL -ContentType "application/json" -Method POST -Body "{'requestType':'getProjectDueDiligenceReport', 'userKey':$env:USER_KEY, 'projectToken':$projectToken}"
   env:
-    API_URL: 'https://app.whitesourcesoftware.com/api/v1.3'
+    API_URL: 'https://saas.whitesourcesoftware.com/api/v1.3'
     USER_KEY: $(USERKEY)
   displayName: 'Pipeline Reports'
   condition: succeededOrFailed()
