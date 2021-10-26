@@ -29,6 +29,7 @@ steps:
   env:
     WS_APIKEY: $(APIKEY)
     WS_USERKEY: $(USERKEY)
+    WS_WSS_URL: https://app.whitesourcesoftware.com/agent
     WS_PRODUCTNAME: $(System.TeamProject)
     WS_PRODUCTVERSION: '1.0'
     WS_PROJECTNAME: $(Build.Repository.Name)_$(Build.SourceBranchName)
