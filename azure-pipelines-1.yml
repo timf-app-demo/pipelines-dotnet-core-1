@@ -69,7 +69,7 @@ steps:
     targetFolder: '$(Build.ArtifactStagingDirectory)/whitesource'
   condition: succeededOrFailed()
 
-- task: ArchiveFiles@2
+- task: ArchiveFiles@2.211.0
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/whitesource'
     includeRootFolder: false
